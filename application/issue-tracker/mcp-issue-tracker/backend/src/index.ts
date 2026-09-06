@@ -1,5 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
+import { fileURLToPath } from "url";
 import { auth } from "./auth.js";
 import usersRoute from "./routes/users.js";
 import tagsRoute from "./routes/tags.js";
@@ -298,7 +299,7 @@ export async function buildApp(
 }
 
 // Start the server if this file is run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   try {
     const app = await buildApp();
     await app.listen({ port: 3000, host: "0.0.0.0" });
