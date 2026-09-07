@@ -16,7 +16,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/arc-forge-hackathon
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             cd application/issue-tracker/mcp-issue-tracker/backend
             npm install
             cd ../frontend
