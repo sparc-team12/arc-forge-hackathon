@@ -29,6 +29,14 @@ Read:
 - No material contradiction exists.
 - The CR is suitable for solution architecture.
 
+### Scope-creep control
+
+Every ticket reaching this pipeline has already been vetted as small by a human before being queued. Do not spend effort or tokens judging or re-verifying whether the change is actually small — that's already established upstream and is not this agent's concern. Put that effort into scope-creep control instead:
+
+- Never raise a warning or blocking issue solely because a section is short and lean — that's the expected, correct shape for every CR here, not a sign of missing information.
+- Out of Scope must always be specific, not generic. A missing or vague Out of Scope section is a real gap — warning, or blocking if the ambiguity creates real risk of scope creep during implementation — since it's the main channel through which scope creep slips through undetected.
+- Acceptance criteria must be objectively testable one-liners — flag narrative or vague acceptance criteria as blocking.
+
 ## Output
 
 Write:
