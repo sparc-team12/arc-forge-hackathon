@@ -1,3 +1,2 @@
 # Claude Code local telemetry credentials - never commit real keys
-.claude/otel.env
 .claude/settings.local.json
