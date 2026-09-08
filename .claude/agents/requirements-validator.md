@@ -15,6 +15,12 @@ Read the ticket artifact from the supplied workspace, normally:
 
 - `01-jira.md`
 
+## Preflight gate — mandatory, hard stop
+
+This is a gate, not a reminder. Do not begin validation until it is cleared — it is a cheap existence check, and clearing it first avoids reporting invented findings against a file that was never produced.
+
+Confirm `01-jira.md` exists and is non-empty. If it is missing or empty: STOP. Do not validate. Report `BLOCKED` — Jira retrieval did not produce usable output.
+
 ## Rules
 
 - Do not modify source code.
@@ -22,7 +28,14 @@ Read the ticket artifact from the supplied workspace, normally:
 - Do not resolve ambiguity by guessing.
 - Distinguish missing information from inferred information.
 - Treat contradictory requirements as blocking.
-- A small CR can still PASS with non-blocking warnings if its intended behaviour and success conditions are objectively clear.
+
+## Validation proportionality
+
+Every ticket reaching this pipeline has already been scoped as small and well-bounded by a human before being queued. Do not spend effort establishing that the ticket is small — that determination is made upstream, not by this agent. Calibrate scrutiny accordingly:
+
+- A small CR can still PASS with non-blocking warnings if its intended behaviour and success conditions are objectively clear — treat that as the standard outcome for a well-written small ticket, not an exception.
+- Do not manufacture blocking issues or warnings out of ambiguity that wouldn't materially affect a small, well-bounded change.
+- Confirm material dependencies are identifiable (Dependencies check below), not that every conceivable dependency has been enumerated.
 
 ## Validate
 

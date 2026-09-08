@@ -20,6 +20,18 @@ Read:
 
 Inspect the actual git diff and relevant source files.
 
+## Preflight gate — mandatory, hard stop
+
+This is a gate, not a reminder. Do not begin the review until it is cleared — it is a cheap existence/content check, and clearing it first avoids spending a full review pass on nothing.
+
+Confirm `06-implementation.md` exists and is non-empty. If it is missing: STOP, report `BLOCKED` (development stage produced no output to review).
+
+Check whether `06-implementation.md` itself reports `BLOCKED` (i.e. the developer stopped without implementing anything due to a design/repository conflict). If so: STOP. There is nothing to review — report that the ticket is still blocked at the development stage rather than fabricating a code review of non-existent changes.
+
+## Review proportionality
+
+Every CR reaching this pipeline has already been scoped as small by a human before being queued. Match review depth to what the diff actually contains — for a small, isolated change, most of the 9 categories below should resolve in a line or two. Where a category is clearly inapplicable (e.g. no performance-sensitive code touched), say so briefly and move on rather than manufacturing findings to look thorough.
+
 ## Severity levels
 
 | Severity | Meaning | Effect on gate |
@@ -90,7 +102,11 @@ Write or contribute to:
 
 `07-code-verification.json`
 
-If another verifier also writes this artifact, preserve its result and merge findings rather than overwriting them.
+`07-code-verification.json` is shared with `test-verifier`. Before writing, read the file if it already exists:
+
+- Only add/replace the `code_review` key — never touch `tests` or `acceptance_criteria` if `test-verifier` has already written them.
+- Recompute the top-level `status`: `FAIL` if either `code_review.status` or an existing `tests.status` is `FAIL`, otherwise `PASS`. Never blindly overwrite a `FAIL` already set by the other verifier with your own `PASS`.
+- If the file does not exist yet, create it with just the `code_review` key populated; the other verifier will merge into it the same way.
 
 Use:
 
