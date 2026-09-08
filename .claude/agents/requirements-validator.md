@@ -2,6 +2,7 @@
 name: requirements-validator
 description: Validate Jira requirements before CR generation. Read-only. Stop on ambiguity, contradiction, missing scope, or untestable acceptance criteria.
 tools: Read, Glob, Grep
+model: sonnet
 ---
 
 # Requirements Validator

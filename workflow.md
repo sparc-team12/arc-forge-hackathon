@@ -120,9 +120,12 @@ Initial state:
     "code_verification": "PENDING",
     "pr": "PENDING"
   },
-  "human_intervention_required": false
+  "human_intervention_required": false,
+  "jira_label": null
 }
 ```
+
+`jira_label` holds the label currently applied to the Jira ticket for the in-progress subagent stage (e.g. `agent:developer`), or `null` if no subagent has picked up the ticket yet. See §4a for how it is maintained.
 
 Valid states:
 
@@ -155,16 +158,18 @@ If `state.json` already exists:
 
 # 4. Generic Stage Execution Contract
 
-For every stage:
+For every stage that has a subagent (stages 2–9; Stage 1 has no subagent and is exempt):
 
 1. Load the required input artifacts.
 2. Verify that all required inputs exist.
-3. Invoke the appropriate agent.
-4. Verify that the expected output was created.
-5. Read the output.
-6. Validate its structure/content.
-7. Update `state.json`.
-8. Only then proceed to the next stage.
+3. Update the Jira label to reflect this stage (see §4a) — remove the previous stage's label, add this stage's label.
+4. Invoke the appropriate agent.
+5. Verify that the expected output was created.
+6. Read the output.
+7. Validate its structure/content.
+8. Post the Jira status comment for this stage (see §4a) — success or failure, with the stage's JSON embedded.
+9. Update `state.json`.
+10. Only then proceed to the next stage.
 
 Every agent invocation should receive:
 
@@ -199,11 +204,109 @@ FAILURE CONDITION:
 
 ---
 
+# 4a. Jira Progress Tracking
+
+The orchestrator — not the subagents — owns all Jira label and comment updates. Subagents never receive Jira-write tools; this keeps the read-only validator agents genuinely read-only and keeps the label/comment logic in one place.
+
+Use:
+
+- `mcp__atlassian__editJiraIssue` to change labels.
+- `mcp__atlassian__addCommentToJiraIssue` to post status comments.
+
+## Label table
+
+Labels are free-text and are created automatically the first time they're applied — no provisioning step is required.
+
+| Stage | Agent(s) | Label |
+|---|---|---|
+| 2 | requirements-validator | `agent:requirements-validator` |
+| 3 | cr-agent | `agent:cr-agent` |
+| 4 | cr-validator | `agent:cr-validator` |
+| 5 | solution-architect | `agent:solution-architect` |
+| 6 | architecture-validator | `agent:architecture-validator` |
+| 7 | developer | `agent:developer` |
+| 8 | code-reviewer + test-verifier | `agent:code-verification` |
+| 9 | pr-agent | `agent:pr-agent` |
+
+Stage 1 (Jira retrieval) has no subagent, so it has no label and posts no comment.
+
+Stage 8 runs code-reviewer and test-verifier together against the same output file (`07-code-verification.json`); apply the single shared label once, before invoking either, and post one combined comment once both have contributed to that file.
+
+## Label lifecycle
+
+Before invoking a stage's agent (contract step 3):
+
+1. If `state.json.jira_label` is non-null, remove that label from the ticket.
+2. Add this stage's label from the table above.
+3. Set `state.json.jira_label` to this stage's label.
+
+After workflow completion (Stage 9 done, status `COMPLETE`), leave `agent:pr-agent` on the ticket — it is not removed. It stands as a record of the last agent to touch the ticket.
+
+If a validation gate fails and the workflow transitions to `HUMAN_REVIEW`, do not remove the current stage's label — it shows a human reviewer exactly where the ticket stalled.
+
+On resume (state.json already exists), trust `state.json.jira_label` rather than re-deriving it, so a resume never leaves a stale or duplicate label.
+
+## Status comment
+
+After a stage's output has been verified and gated (contract step 8), post one comment via `mcp__atlassian__addCommentToJiraIssue`.
+
+### Determining SUCCESS vs FAILURE
+
+- Stages 2, 4, 6, 8 (produce a JSON gate file): `SUCCESS` if the file's `status` is `PASS`; `FAILURE` if `FAIL`/`BLOCKED`, or if the agent errored or never produced the file.
+- Stages 3, 5, 7, 9 (produce only a `.md` doc): `SUCCESS` if the expected artifact was produced; `FAILURE` if the agent errored, never produced the artifact, or (Stage 7 only) reported `BLOCKED`.
+
+### JSON to embed
+
+- Stages 2, 4, 6, 8: embed the actual gate file verbatim (`01-requirements-validation.json`, `03-cr-validation.json`, `05-architecture-validation.json`, `07-code-verification.json`).
+- Stages 3, 5, 7, 9: the orchestrator authors a small companion file, `<artifact-basename>.status.json`, in the same workspace directory, and embeds that. This keeps machine-readable status separate from the human-readable doc (see rule 11 in §17). Schema:
+
+```json
+{
+  "ticket": "AC-12",
+  "stage": "cr-agent",
+  "status": "SUCCESS",
+  "artifact": "02-cr.md",
+  "summary": "",
+  "cause": null
+}
+```
+
+`summary` and `cause` are each one line. On `SUCCESS` they may be empty/null; on `FAILURE`, `summary` is a one-line description of what failed and `cause` is a one-line root cause.
+
+### Comment template
+
+On success:
+
+````text
+**Stage: <stage-name>** — SUCCESS
+
+```json
+<embedded json>
+```
+````
+
+On failure:
+
+````text
+**Stage: <stage-name>** — FAILURE
+
+<one-line failure description>
+<one-line cause>
+
+```json
+<embedded json>
+```
+````
+
+If the embedded JSON is very large, truncate it with a note and reference the workspace file path instead of embedding the full contents, to stay within Jira comment size limits.
+
+---
+
 # 5. Stage 1 — Retrieve Jira Ticket
 
 ## Agent
 
-Use the Jira-capable tool/agent available in the environment.
+The orchestrator performs this stage directly (no subagent). Use `mcp__atlassian__getJiraIssue` — the same Atlassian MCP server used throughout §4a for labels and comments.
 
 ## Input
 

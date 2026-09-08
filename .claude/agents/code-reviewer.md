@@ -2,6 +2,7 @@
 name: code-reviewer
 description: Independently review implementation against Jira, CR, technical design, scope, quality, and security. Read-only.
 tools: Read, Glob, Grep, Bash
+model: sonnet
 ---
 
 # Code Reviewer

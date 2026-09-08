@@ -2,6 +2,7 @@
 name: cr-validator
 description: Independently validate a generated CR against the original Jira ticket and requirements validation.
 tools: Read, Glob, Grep
+model: sonnet
 ---
 
 # CR Validator

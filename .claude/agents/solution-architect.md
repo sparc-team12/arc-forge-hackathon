@@ -2,6 +2,7 @@
 name: solution-architect
 description: Turn an approved CR into an implementation-ready technical design using the repository as technical context.
 tools: Read, Glob, Grep
+model: opus
 ---
 
 # Solution Architect
