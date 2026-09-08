@@ -7,7 +7,7 @@
  * SDK instrumentation creates during that call (agent steps, tool calls,
  * model completions, tokens, cost) inherits this context automatically.
  */
-import { propagateAttributes } from "@langfuse/tracing";
+import { propagateAttributes, startActiveObservation } from "@langfuse/tracing";
 import { SERVER_VERSION } from "./instrumentation.js";
 
 /**
@@ -28,15 +28,23 @@ import { SERVER_VERSION } from "./instrumentation.js";
 export async function withTicketTrace(ticket, fn) {
   const { key, summary, source, metadata = {} } = ticket;
   if (!key) throw new Error("withTicketTrace: ticket.key is required");
+  const name = summary || key;
 
   return propagateAttributes(
     {
       sessionId: `jira-${key}`,
-      traceName: summary || key,
+      traceName: name,
       version: SERVER_VERSION,
       tags: ["jira-agent", `ticket:${key}`, ...(source ? [`source:${source}`] : [])],
       metadata: { ticketKey: key, ...metadata },
     },
-    fn
+    () =>
+      // A real active span, not just propagated attributes - this is what the
+      // Agent SDK's W3C trace-context auto-injection (see
+      // native-cli-telemetry.js) actually detects and nests under when
+      // ENABLE_NATIVE_CLI_TELEMETRY is on. asType "agent" per Langfuse's own
+      // guidance: a subagent's execution is typed `agent`, not `tool`/`span`,
+      // so it shows up as its own node in the Agent Graph.
+      startActiveObservation(name, () => fn(), { asType: "agent" })
   );
 }

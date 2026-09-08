@@ -1,0 +1,237 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - link "Issue Tracker" [ref=e8] [cursor=pointer]:
+            - /url: /
+          - navigation [ref=e9]:
+            - link "Home" [ref=e10] [cursor=pointer]:
+              - /url: /
+            - link "Issues" [ref=e11] [cursor=pointer]:
+              - /url: /issues
+        - generic [ref=e35]:
+          - generic [ref=e36]: Welcome, Demo User
+          - button "Copy API Key" [ref=e37] [cursor=pointer]:
+            - img
+            - text: Copy API Key
+          - button "Sign Out" [ref=e38] [cursor=pointer]
+    - main [ref=e14]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - heading "Issues" [level=1] [ref=e42]
+            - paragraph [ref=e43]: Manage and track all project issues
+          - link "Create Issue" [ref=e44] [cursor=pointer]:
+            - /url: /issues/new
+        - generic [ref=e45]:
+          - generic [ref=e47]: Filters
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - text: Search
+              - textbox "Search issues by title or description..." [ref=e50]
+            - generic [ref=e51]:
+              - generic [ref=e52]:
+                - text: Status
+                - combobox [ref=e53] [cursor=pointer]:
+                  - generic: All statuses
+                  - img
+              - generic [ref=e54]:
+                - text: Assigned User
+                - combobox [ref=e55] [cursor=pointer]:
+                  - generic: All users
+                  - img
+              - generic [ref=e56]:
+                - text: Tag
+                - combobox [ref=e57] [cursor=pointer]:
+                  - generic: All tags
+                  - img
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e61]:
+              - generic [ref=e62]:
+                - link "Urgent 3rd Party Integration Issue" [ref=e64] [cursor=pointer]:
+                  - /url: /issues/7
+                - paragraph [ref=e65]: Urgent issue requiring attention for 3rd party integration with Rust components
+              - generic [ref=e66]:
+                - generic [ref=e67]: In Progress
+                - generic [ref=e68]: Urgent
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - generic [ref=e73]: 3rd party integration
+                - generic [ref=e75]: Rust
+              - generic [ref=e76]:
+                - generic [ref=e77]:
+                  - generic [ref=e78]:
+                    - generic [ref=e79]: Created by
+                    - generic [ref=e80]:
+                      - generic "Brian" [ref=e81]: B
+                      - generic [ref=e82]: Brian
+                  - generic [ref=e83]:
+                    - generic [ref=e84]: Assigned to
+                    - generic [ref=e85]:
+                      - generic "Admin User" [ref=e86]: AU
+                      - generic [ref=e87]: Admin User
+                - generic [ref=e88]:
+                  - generic [ref=e89]: "#7"
+                  - generic [ref=e90]: •
+                  - generic [ref=e91]: Jul 26, 2025
+          - generic [ref=e92]:
+            - generic [ref=e94]:
+              - generic [ref=e95]:
+                - link "Set up project structure" [ref=e97] [cursor=pointer]:
+                  - /url: /issues/1
+                - paragraph [ref=e98]: Initialize the project with proper directory structure and configuration files.
+              - generic [ref=e99]:
+                - generic [ref=e100]: Done
+                - generic [ref=e101]: Medium
+            - generic [ref=e103]:
+              - generic [ref=e106]: backend
+              - generic [ref=e107]:
+                - generic [ref=e108]:
+                  - generic [ref=e109]:
+                    - generic [ref=e110]: Created by
+                    - generic [ref=e111]:
+                      - generic "Admin User" [ref=e112]: AU
+                      - generic [ref=e113]: Admin User
+                  - generic [ref=e114]:
+                    - generic [ref=e115]: Assigned to
+                    - generic [ref=e116]:
+                      - generic "John Doe" [ref=e117]: JD
+                      - generic [ref=e118]: John Doe
+                - generic [ref=e119]:
+                  - generic [ref=e120]: "#1"
+                  - generic [ref=e121]: •
+                  - generic [ref=e122]: Jul 26, 2025
+          - generic [ref=e123]:
+            - generic [ref=e125]:
+              - generic [ref=e126]:
+                - link "Design user authentication flow" [ref=e128] [cursor=pointer]:
+                  - /url: /issues/2
+                - paragraph [ref=e129]: Create wireframes and user flows for the authentication system including sign up, sign in, and password reset.
+              - generic [ref=e130]:
+                - generic [ref=e131]: In Progress
+                - generic [ref=e132]: Medium
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - generic [ref=e137]: feature
+                - generic [ref=e139]: frontend
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - generic [ref=e142]:
+                    - generic [ref=e143]: Created by
+                    - generic [ref=e144]:
+                      - generic "Admin User" [ref=e145]: AU
+                      - generic [ref=e146]: Admin User
+                  - generic [ref=e147]:
+                    - generic [ref=e148]: Assigned to
+                    - generic [ref=e149]:
+                      - generic "Jane Smith" [ref=e150]: JS
+                      - generic [ref=e151]: Jane Smith
+                - generic [ref=e152]:
+                  - generic [ref=e153]: "#2"
+                  - generic [ref=e154]: •
+                  - generic [ref=e155]: Jul 26, 2025
+          - generic [ref=e156]:
+            - generic [ref=e158]:
+              - generic [ref=e159]:
+                - link "Fix issue list filtering" [ref=e161] [cursor=pointer]:
+                  - /url: /issues/3
+                - paragraph [ref=e162]: The issue list filter by status is not working correctly. When selecting "in progress", it shows all issues.
+              - generic [ref=e163]:
+                - generic [ref=e164]: Not Started
+                - generic [ref=e165]: Medium
+            - generic [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e170]: bug
+                - generic [ref=e172]: frontend
+              - generic [ref=e173]:
+                - generic [ref=e174]:
+                  - generic [ref=e175]:
+                    - generic [ref=e176]: Created by
+                    - generic [ref=e177]:
+                      - generic "Jane Smith" [ref=e178]: JS
+                      - generic [ref=e179]: Jane Smith
+                  - generic [ref=e180]:
+                    - generic [ref=e181]: Assigned to
+                    - generic [ref=e182]:
+                      - generic "John Doe" [ref=e183]: JD
+                      - generic [ref=e184]: John Doe
+                - generic [ref=e185]:
+                  - generic [ref=e186]: "#3"
+                  - generic [ref=e187]: •
+                  - generic [ref=e188]: Jul 26, 2025
+          - generic [ref=e189]:
+            - generic [ref=e191]:
+              - generic [ref=e192]:
+                - link "Add dark mode support" [ref=e194] [cursor=pointer]:
+                  - /url: /issues/4
+                - paragraph [ref=e195]: Implement dark mode toggle functionality with proper theme switching and persistence.
+              - generic [ref=e196]:
+                - generic [ref=e197]: Not Started
+                - generic [ref=e198]: Medium
+            - generic [ref=e200]:
+              - generic [ref=e201]:
+                - generic [ref=e203]: enhancement
+                - generic [ref=e205]: frontend
+              - generic [ref=e206]:
+                - generic [ref=e208]:
+                  - generic [ref=e209]: Created by
+                  - generic [ref=e210]:
+                    - generic "Developer" [ref=e211]: D
+                    - generic [ref=e212]: Developer
+                - generic [ref=e213]:
+                  - generic [ref=e214]: "#4"
+                  - generic [ref=e215]: •
+                  - generic [ref=e216]: Jul 26, 2025
+          - generic [ref=e217]:
+            - generic [ref=e219]:
+              - generic [ref=e220]:
+                - link "API documentation" [ref=e222] [cursor=pointer]:
+                  - /url: /issues/5
+                - paragraph [ref=e223]: Create comprehensive API documentation with examples for all endpoints.
+              - generic [ref=e224]:
+                - generic [ref=e225]: Not Started
+                - generic [ref=e226]: Medium
+            - generic [ref=e228]:
+              - generic [ref=e231]: documentation
+              - generic [ref=e232]:
+                - generic [ref=e233]:
+                  - generic [ref=e234]:
+                    - generic [ref=e235]: Created by
+                    - generic [ref=e236]:
+                      - generic "Admin User" [ref=e237]: AU
+                      - generic [ref=e238]: Admin User
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: Assigned to
+                    - generic [ref=e241]:
+                      - generic "Developer" [ref=e242]: D
+                      - generic [ref=e243]: Developer
+                - generic [ref=e244]:
+                  - generic [ref=e245]: "#5"
+                  - generic [ref=e246]: •
+                  - generic [ref=e247]: Jul 26, 2025
+          - generic [ref=e248]:
+            - generic [ref=e250]:
+              - generic [ref=e251]:
+                - link "Database performance optimization" [ref=e253] [cursor=pointer]:
+                  - /url: /issues/6
+                - paragraph [ref=e254]: Review and optimize database queries for better performance, especially for the issues list with filtering.
+              - generic [ref=e255]:
+                - generic [ref=e256]: Not Started
+                - generic [ref=e257]: Medium
+            - generic [ref=e259]:
+              - generic [ref=e260]:
+                - generic [ref=e262]: backend
+                - generic [ref=e264]: enhancement
+              - generic [ref=e265]:
+                - generic [ref=e267]:
+                  - generic [ref=e268]: Created by
+                  - generic [ref=e269]:
+                    - generic "Admin User" [ref=e270]: AU
+                    - generic [ref=e271]: Admin User
+                - generic [ref=e272]:
+                  - generic [ref=e273]: "#6"
+                  - generic [ref=e274]: •
+                  - generic [ref=e275]: Jul 26, 2025
+  - region "Notifications alt+T"

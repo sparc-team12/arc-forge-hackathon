@@ -1,5 +1,15 @@
 /**
- * Langfuse telemetry for Claude Agent SDK-based agents.
+ * PARKED - see ../README.md. Langfuse telemetry for Claude Agent SDK-based
+ * agents; the Jira pipeline itself was not built. Kept only so the wiring
+ * exists when/if that pipeline resumes.
+ *
+ * Deliberately sectioned off from the issue-tracker MCP server's tracing
+ * (application/issue-tracker/mcp-issue-tracker/mcp/telemetry/): separate
+ * directory, separate package.json/node_modules/.env, zero imports between
+ * the two in either direction, and non-colliding Langfuse session/tag
+ * namespacing (`jira-*` / `jira-agent` here vs `mcp-*` / `mcp` there) so
+ * traces from each never get confused for the other's even inside the same
+ * Langfuse project. Nothing outside this directory imports anything from it.
  *
  * This is the framework a future pipeline hooks into - it does not itself
  * poll Jira or decide what agents do. Import this module first (before
@@ -12,8 +22,17 @@
  * https://langfuse.com/integrations/frameworks/claude-agent-sdk-js
  */
 
-// Load .env before constructing anything that reads LANGFUSE_*/ANTHROPIC_* env vars.
-import "dotenv/config";
+// Load THIS directory's .env explicitly - not process.cwd(). `dotenv/config`
+// resolves relative to the current working directory, so a script invoked
+// from elsewhere (e.g. the MCP server's directory, by mistake or by a future
+// script that imports across directories) would silently load *that* .env
+// instead of this one. An explicit path makes cross-loading impossible
+// regardless of where this ever gets invoked from.
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
+dotenv.config({ path: path.join(path.dirname(fileURLToPath(import.meta.url)), ".env") });
 
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import { LangfuseSpanProcessor, isDefaultExportSpan } from "@langfuse/otel";

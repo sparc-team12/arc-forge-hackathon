@@ -1,0 +1,20 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - link "Issue Tracker" [ref=e8] [cursor=pointer]:
+            - /url: /
+          - navigation [ref=e9]:
+            - link "Home" [ref=e10] [cursor=pointer]:
+              - /url: /
+            - link "Issues" [ref=e11] [cursor=pointer]:
+              - /url: /issues
+        - generic [ref=e13]: Loading...
+    - main [ref=e14]:
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: Welcome to Issue Tracker
+          - generic [ref=e19]: Manage and track issues for your projects with ease.
+        - paragraph [ref=e21]: Start by viewing your issues or creating a new one.
+  - region "Notifications alt+T"
