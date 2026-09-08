@@ -1,2 +1,3 @@
 # Claude Code local telemetry credentials - never commit real keys
 .claude/settings.local.json
+.vscode
