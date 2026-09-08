@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import { apiKey } from "better-auth/plugins";
+//import { apiKey } from "better-auth/plugins";
 import Database from "better-sqlite3";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -20,12 +20,6 @@ const authConfig = {
     "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:3000",
-  ],
-  plugins: [
-    apiKey({
-      defaultPrefix: "issues_",
-      enableMetadata: true,
-    }),
   ],
 };
 

@@ -88,7 +88,13 @@ export async function runMigrations(): Promise<void> {
       if (process.env.NODE_ENV !== "test") {
         console.log(`Running migration: ${file}`);
       }
-      await db.run(sql);
+      await new Promise<void>((resolve, reject) => {
+        const rawDb = (db as DatabaseConnection)['db'];
+        rawDb.exec(sql, (err: Error | null) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
     }
 
     if (process.env.NODE_ENV !== "test") {

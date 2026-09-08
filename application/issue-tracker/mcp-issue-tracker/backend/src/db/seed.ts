@@ -66,7 +66,7 @@ async function seedDatabase() {
         title: "Set up project structure",
         description:
           "Initialize the project with proper directory structure and configuration files.",
-        status: "done",
+        status: "closed",
         assigned_user_id: userIds[0],
         created_by_user_id: userIds[2],
         tags: [tagIds[1]], // backend
@@ -84,7 +84,7 @@ async function seedDatabase() {
         title: "Fix issue list filtering",
         description:
           'The issue list filter by status is not working correctly. When selecting "in progress", it shows all issues.',
-        status: "not_started",
+        status: "open",
         assigned_user_id: userIds[0],
         created_by_user_id: userIds[1],
         tags: [tagIds[0], tagIds[2]], // frontend, bug
@@ -93,7 +93,7 @@ async function seedDatabase() {
         title: "Add dark mode support",
         description:
           "Implement dark mode toggle functionality with proper theme switching and persistence.",
-        status: "not_started",
+        status: "open",
         assigned_user_id: null,
         created_by_user_id: userIds[3],
         tags: [tagIds[0], tagIds[4]], // frontend, enhancement
@@ -102,7 +102,7 @@ async function seedDatabase() {
         title: "API documentation",
         description:
           "Create comprehensive API documentation with examples for all endpoints.",
-        status: "not_started",
+        status: "open",
         assigned_user_id: userIds[3],
         created_by_user_id: userIds[2],
         tags: [tagIds[5]], // documentation
@@ -111,7 +111,7 @@ async function seedDatabase() {
         title: "Database performance optimization",
         description:
           "Review and optimize database queries for better performance, especially for the issues list with filtering.",
-        status: "not_started",
+        status: "open",
         assigned_user_id: null,
         created_by_user_id: userIds[2],
         tags: [tagIds[1], tagIds[4]], // backend, enhancement
