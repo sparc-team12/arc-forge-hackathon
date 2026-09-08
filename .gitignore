@@ -1,3 +1,10 @@
 # Claude Code local telemetry credentials - never commit real keys
 .claude/settings.local.json
 .vscode
+
+# Generated workflow artifacts (per-ticket docs from /work-ticket)
+workspaces/
+
+# run-orchestrator.ps1's local telemetry proxy logs
+scripts/.otel-cost-proxy.out.log
+scripts/.otel-cost-proxy.err.log
