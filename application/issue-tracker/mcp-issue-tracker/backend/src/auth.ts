@@ -1,4 +1,4 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, type BetterAuthOptions } from "better-auth";
 //import { apiKey } from "better-auth/plugins";
 import Database from "better-sqlite3";
 import path from "path";
@@ -10,11 +10,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dbPath = path.resolve(__dirname, "..", "database.sqlite");
 const db = new Database(dbPath);
 
-const authConfig = {
+const authConfig: BetterAuthOptions = {
   database: db,
   baseURL: "http://localhost:3000/api/auth",
   emailAndPassword: {
     enabled: true,
+  },
+  user: {
+    additionalFields: {
+      phoneNumber: {
+        type: "string",
+        required: true,
+        input: true,
+        returned: false,
+      },
+    },
   },
   trustedOrigins: [
     "http://localhost:5173",

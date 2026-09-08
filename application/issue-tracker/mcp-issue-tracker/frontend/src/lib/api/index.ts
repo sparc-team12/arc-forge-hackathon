@@ -33,7 +33,12 @@ api.interceptors.response.use(
 
 // Auth API
 export const authApi = {
-  signUp: async (data: { email: string; password: string; name: string }) => {
+  signUp: async (data: {
+    email: string;
+    password: string;
+    name: string;
+    phoneNumber: string;
+  }) => {
     const response = await api.post("/auth/sign-up/email", data);
     return response.data;
   },

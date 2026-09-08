@@ -5,20 +5,40 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from './useAuth';
 
+// Exactly 10 ASCII digits. \d excludes spaces, dashes, "+" and country codes,
+// so pasted formatting is rejected rather than normalized.
+const PHONE_NUMBER_PATTERN = /^\d{10}$/;
+const PHONE_NUMBER_LENGTH = 10;
+
+function validatePhoneNumber(value: string): string {
+  if (!value) {
+    return 'Phone number is required';
+  }
+
+  if (!PHONE_NUMBER_PATTERN.test(value)) {
+    return 'Phone number must be exactly 10 digits (numbers only)';
+  }
+
+  return '';
+}
+
 export default function SignUpForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setPhoneError('');
 
     // Validation
     if (password !== confirmPassword) {
@@ -31,10 +51,16 @@ export default function SignUpForm() {
       return;
     }
 
+    const phoneValidationError = validatePhoneNumber(phoneNumber);
+    if (phoneValidationError) {
+      setPhoneError(phoneValidationError);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const result = await signUp(email, password, name);
+      const result = await signUp(email, password, name, phoneNumber);
       
       if (result.success) {
         navigate('/issues'); // Redirect to issues page after successful sign up
@@ -96,6 +122,31 @@ export default function SignUpForm() {
             </div>
             
             <div className="space-y-2">
+              <label htmlFor="phoneNumber" className="text-sm font-medium">
+                Phone Number
+              </label>
+              <Input
+                id="phoneNumber"
+                type="text"
+                inputMode="numeric"
+                placeholder="Enter your 10-digit phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                onBlur={(e) => setPhoneError(validatePhoneNumber(e.target.value))}
+                required
+                disabled={isLoading}
+                maxLength={PHONE_NUMBER_LENGTH}
+                aria-invalid={!!phoneError}
+                aria-describedby="phoneNumber-error"
+              />
+              {phoneError && (
+                <p id="phoneNumber-error" className="text-sm text-red-600">
+                  {phoneError}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
                 Password
               </label>
@@ -130,7 +181,7 @@ export default function SignUpForm() {
             <Button 
               type="submit" 
               className="w-full" 
-              disabled={isLoading || !name || !email || !password || !confirmPassword}
+              disabled={isLoading || !name || !email || !phoneNumber || !password || !confirmPassword}
             >
               {isLoading ? 'Creating Account...' : 'Sign Up'}
             </Button>

@@ -12,6 +12,13 @@ import {
   livenessCheckHandler,
 } from "./utils/health.js";
 
+// Sign-up phone number must be exactly 10 ASCII digits, with no formatting
+// characters. \d matches only 0-9, so spaces, dashes, "+" and country-code
+// prefixes are all rejected without any normalization.
+const PHONE_NUMBER_PATTERN = /^\d{10}$/;
+const INVALID_PHONE_NUMBER_MESSAGE =
+  "Phone number must be exactly 10 digits (numbers only)";
+
 export async function buildApp(
   options = { skipAuth: false }
 ): Promise<FastifyInstance> {
@@ -39,6 +46,25 @@ export async function buildApp(
       // Custom sign-up endpoint that creates API key after user creation
       fastify.post("/sign-up/email", async (request, reply) => {
         try {
+          // Validate the phone number before contacting Better Auth so that no
+          // user record can be created without a valid 10-digit phone number.
+          // The typeof check must precede the regex test: /^\d{10}$/.test(1234567890)
+          // coerces the number to a string and would otherwise pass.
+          const { phoneNumber } = (request.body ?? {}) as {
+            phoneNumber?: unknown;
+          };
+          if (
+            typeof phoneNumber !== "string" ||
+            !PHONE_NUMBER_PATTERN.test(phoneNumber)
+          ) {
+            reply.status(400).send({
+              error: "Validation error",
+              code: "INVALID_PHONE_NUMBER",
+              message: INVALID_PHONE_NUMBER_MESSAGE,
+            });
+            return;
+          }
+
           // First, create the user through Better Auth
           const authRequest = new Request(
             `http://localhost:3000/api/auth/sign-up/email`,

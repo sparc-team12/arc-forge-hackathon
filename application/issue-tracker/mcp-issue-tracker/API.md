@@ -21,7 +21,20 @@ Content-Type: application/json
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "password": "password123"
+  "password": "password123",
+  "phoneNumber": "0123456789"
+}
+```
+
+`phoneNumber` is **required** and must be a string of exactly 10 digits (`0-9` only). Spaces, dashes, `+` and country-code prefixes are rejected rather than normalized. The value is stored with the user record but is not returned in responses.
+
+**Error (400) — invalid or missing phone number:**
+
+```json
+{
+  "error": "Validation error",
+  "code": "INVALID_PHONE_NUMBER",
+  "message": "Phone number must be exactly 10 digits (numbers only)"
 }
 ```
 

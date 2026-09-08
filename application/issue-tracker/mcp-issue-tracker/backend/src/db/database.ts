@@ -97,6 +97,22 @@ export async function runMigrations(): Promise<void> {
       });
     }
 
+    // Additive schema change applied programmatically rather than through a
+    // .sql file: every file in migrations/ is re-executed on every run and
+    // SQLite has no "ADD COLUMN IF NOT EXISTS", so a bare ALTER TABLE would
+    // fail with "duplicate column name" on the second run. The PRAGMA guard
+    // below keeps this step idempotent.
+    const userColumns = await db.all("PRAGMA table_info(user)");
+    if (
+      userColumns.length > 0 &&
+      !userColumns.some((column) => column.name === "phoneNumber")
+    ) {
+      if (process.env.NODE_ENV !== "test") {
+        console.log("Adding phoneNumber column to user table...");
+      }
+      await db.run("ALTER TABLE user ADD COLUMN phoneNumber TEXT");
+    }
+
     if (process.env.NODE_ENV !== "test") {
       console.log("All migrations completed successfully!");
     }

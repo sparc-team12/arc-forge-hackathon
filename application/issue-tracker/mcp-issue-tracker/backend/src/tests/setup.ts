@@ -33,6 +33,7 @@ beforeAll(async () => {
         email TEXT UNIQUE NOT NULL,
         emailVerified INTEGER NOT NULL,
         image TEXT,
+        phoneNumber TEXT,
         createdAt DATE NOT NULL,
         updatedAt DATE NOT NULL
       )

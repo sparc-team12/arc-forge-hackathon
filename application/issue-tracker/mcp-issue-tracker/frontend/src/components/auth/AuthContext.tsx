@@ -5,7 +5,7 @@ import { authApi } from '@/lib/api';
 
 interface AuthContextType extends AuthState {
   signIn: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  signUp: (email: string, password: string, name: string) => Promise<{ success: boolean; error?: string }>;
+  signUp: (email: string, password: string, name: string, phoneNumber: string) => Promise<{ success: boolean; error?: string }>;
   signOut: () => Promise<void>;
   refetchUser: () => Promise<void>;
 }
@@ -80,11 +80,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const signUp = async (email: string, password: string, name: string) => {
+  const signUp = async (email: string, password: string, name: string, phoneNumber: string) => {
     try {
       setAuthState(prev => ({ ...prev, isLoading: true }));
-      
-      const response = await authApi.signUp({ email, password, name });
+
+      const response = await authApi.signUp({ email, password, name, phoneNumber });
       
       if (response.user) {
         setAuthState({
