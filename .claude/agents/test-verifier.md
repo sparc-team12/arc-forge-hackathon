@@ -2,6 +2,7 @@
 name: test-verifier
 description: Independently verify tests, build/type/lint results, and acceptance criteria. Read-only.
 tools: Read, Glob, Grep, Bash
+model: sonnet
 ---
 
 # Test Verifier

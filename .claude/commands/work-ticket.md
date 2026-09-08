@@ -46,18 +46,26 @@ The workflow is fail-closed.
 
 ### Stage mapping
 
-| Stage | Agent | Output |
-|---|---|---|
-| Jira retrieval | Jira-capable tooling | `01-jira.md` |
-| Requirements validation | `requirements-validator` | `01-requirements-validation.json` |
-| CR generation | `cr-agent` | `02-cr.md` |
-| CR validation | `cr-validator` | `03-cr-validation.json` |
-| Architecture | `solution-architect` | `04-technical-design.md` |
-| Architecture validation | `architecture-validator` | `05-architecture-validation.json` |
-| Development | `developer` | `06-implementation.md` |
-| Code review | `code-reviewer` | `07-code-verification.json` |
-| Test verification | `test-verifier` | `07-code-verification.json` |
-| PR | `pr-agent` | `08-pr.md` |
+| Stage | Agent | Output | Jira label |
+|---|---|---|---|
+| Jira retrieval | Orchestrator (`mcp__atlassian__getJiraIssue`) | `01-jira.md` | — |
+| Requirements validation | `requirements-validator` | `01-requirements-validation.json` | `agent:requirements-validator` |
+| CR generation | `cr-agent` | `02-cr.md` | `agent:cr-agent` |
+| CR validation | `cr-validator` | `03-cr-validation.json` | `agent:cr-validator` |
+| Architecture | `solution-architect` | `04-technical-design.md` | `agent:solution-architect` |
+| Architecture validation | `architecture-validator` | `05-architecture-validation.json` | `agent:architecture-validator` |
+| Development | `developer` | `06-implementation.md` | `agent:developer` |
+| Code review | `code-reviewer` | `07-code-verification.json` | `agent:code-verification` |
+| Test verification | `test-verifier` | `07-code-verification.json` | `agent:code-verification` |
+| PR | `pr-agent` | `08-pr.md` | `agent:pr-agent` |
+
+## Jira progress updates
+
+Before invoking each stage's agent, swap the Jira label: remove the previous stage's label, add the current stage's label (`mcp__atlassian__editJiraIssue`). Track the currently-applied label in `state.json.jira_label`.
+
+After each stage's output is verified and gated, post a Jira comment (`mcp__atlassian__addCommentToJiraIssue`) stating SUCCESS or FAILURE, with the stage's JSON result embedded as a code block (no attachment API is available, so embedding is the delivery mechanism). On FAILURE, include a one-line description and a one-line cause.
+
+The full label table, comment template, and the JSON-embedding rules (including the companion `.status.json` used for `.md`-only stages) are defined in `workflow.md` §4a — treat it as the source of truth; this file only summarizes it.
 
 ## Validation gates
 

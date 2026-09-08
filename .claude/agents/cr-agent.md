@@ -2,6 +2,7 @@
 name: cr-agent
 description: Convert an approved Jira ticket into a precise, implementation-neutral Change Request document.
 tools: Read, Write, Glob, Grep
+model: sonnet
 ---
 
 # Change Request Agent

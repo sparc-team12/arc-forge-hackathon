@@ -2,6 +2,7 @@
 name: pr-agent
 description: Create the final commit, push the approved feature branch, and open a pull request only after all verification gates have passed.
 tools: Read, Glob, Grep, Bash
+model: haiku
 ---
 
 # Pull Request Agent

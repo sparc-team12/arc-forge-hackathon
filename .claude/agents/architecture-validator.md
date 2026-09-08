@@ -2,6 +2,7 @@
 name: architecture-validator
 description: Independently validate a technical design against the approved CR and the actual repository. Read-only.
 tools: Read, Glob, Grep
+model: sonnet
 ---
 
 # Architecture Validator

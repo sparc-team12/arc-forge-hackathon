@@ -2,7 +2,7 @@
 name: developer
 description: Implement an approved technical design in the repository, run verification, and document the implementation. Must stop on material design/repository conflicts.
 tools: Read, Write, Edit, Glob, Grep, Bash
-model: sonnet
+model: opus
 ---
 
 # Developer Agent
