@@ -1,5 +1,6 @@
 import Fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
+import { pathToFileURL } from "url";
 import { auth } from "./auth.js";
 import usersRoute from "./routes/users.js";
 import tagsRoute from "./routes/tags.js";
@@ -297,8 +298,11 @@ export async function buildApp(
   return fastify;
 }
 
-// Start the server if this file is run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Start the server if this file is run directly.
+// `file://${process.argv[1]}` never matches import.meta.url on Windows -
+// process.argv[1] is a raw OS path (backslashes, no `file:///` prefix), so
+// the naive string-concat guard silently never starts the server there.
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
     const app = await buildApp();
     await app.listen({ port: 3000, host: "0.0.0.0" });

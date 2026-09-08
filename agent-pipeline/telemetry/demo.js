@@ -7,10 +7,13 @@
  *   node demo.js
  *
  * Requires ANTHROPIC_API_KEY and LANGFUSE_PUBLIC_KEY/LANGFUSE_SECRET_KEY in
- * .env (see .env.template).
+ * .env (see .env.template). Set ENABLE_NATIVE_CLI_TELEMETRY=1 to also
+ * exercise the Agent SDK's official native OTel export (see
+ * native-cli-telemetry.js) alongside the default OpenInference path.
  */
 import { ClaudeAgentSDK, tracingEnabled, flushTraces } from "./instrumentation.js";
 import { withTicketTrace } from "./context.js";
+import { nativeCliTelemetryEnv, nativeCliTelemetryEnabled } from "./native-cli-telemetry.js";
 
 if (!process.env.ANTHROPIC_API_KEY) {
   console.error("ANTHROPIC_API_KEY is not set - copy .env.template to .env and fill it in.");
@@ -18,6 +21,9 @@ if (!process.env.ANTHROPIC_API_KEY) {
 }
 if (!tracingEnabled) {
   console.error("LANGFUSE_PUBLIC_KEY/LANGFUSE_SECRET_KEY not set - traces will not be sent.");
+}
+if (nativeCliTelemetryEnabled) {
+  console.error("ENABLE_NATIVE_CLI_TELEMETRY=1 - also exporting the CLI's native OTel signals.");
 }
 
 const { query } = ClaudeAgentSDK;
@@ -27,7 +33,14 @@ await withTicketTrace(
   async () => {
     for await (const message of query({
       prompt: "What is the capital of France? Answer in a single short sentence.",
-      options: { model: "claude-sonnet-5", allowedTools: [] },
+      options: {
+        model: "claude-sonnet-5",
+        allowedTools: [],
+        // In TS/JS, options.env REPLACES the inherited environment rather
+        // than merging into it (unlike Python) - spread process.env first or
+        // the subprocess loses PATH, ANTHROPIC_API_KEY, everything.
+        env: { ...process.env, ...nativeCliTelemetryEnv({ traces: true }) },
+      },
     })) {
       if (message.type === "assistant") {
         for (const block of message.message.content) {

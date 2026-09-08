@@ -32,8 +32,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setAuthState(prev => ({ ...prev, isLoading: true }));
       const response = await authApi.getSession();
-      
-      if (response.user) {
+
+      if (response?.user) {
         setAuthState({
           user: response.user,
           isAuthenticated: true,
