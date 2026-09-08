@@ -874,6 +874,18 @@ Ticket: AC-12
 PR: <PR URL>
 ```
 
+## Jira sync on completion
+
+Before displaying the summary, post a comment on the Jira ticket with the PR link using the Jira-capable tool available in the environment (e.g. `addCommentToJiraIssue`):
+
+```text
+Implementation complete. Pull request: <PR URL>
+```
+
+If the ticket workflow supports it and a transition is configured, this is also the point to move the ticket to its "in review" (or equivalent) status. Do not do this if no transition is configured — do not guess a transition name.
+
+If posting the comment fails, do not fail the overall workflow over it — `status = COMPLETE` still stands since the PR was actually created; just note the sync failure in the displayed summary.
+
 ---
 
 # 15. Human Intervention
@@ -909,6 +921,26 @@ Resolve the issue and rerun:
 
 /work-ticket <ticket>
 ```
+
+## Jira sync on halt
+
+Before displaying `WORKFLOW HALTED`, post a comment on the Jira ticket summarizing the halt using the Jira-capable tool available in the environment (e.g. `addCommentToJiraIssue`):
+
+```text
+Workflow halted at stage: <stage>
+
+Reason: <reason>
+
+Blocking issues:
+1. ...
+2. ...
+
+Required human decision: <decision required>
+```
+
+This keeps ticket watchers informed without them needing to check the workspace artifacts.
+
+If posting the comment itself fails (tool unavailable, auth failure), do not let that block the halt: log it, still display `WORKFLOW HALTED` locally, and continue treating the workflow as `HUMAN_REVIEW`. Do not retry indefinitely and do not treat a failed comment as a reason to change the underlying gate result.
 
 The workflow must resume from the last valid state rather than restarting from Jira.
 
